@@ -1,9 +1,11 @@
 module github.com/rondoval/aquarea2mqtt
 
-go 1.14
+go 1.21
+
+require github.com/eclipse/paho.mqtt.golang v1.4.3
 
 require (
-	github.com/BurntSushi/toml v0.3.1
-	github.com/eclipse/paho.mqtt.golang v1.2.0
-	golang.org/x/net v0.0.0-20200625001655-4c5254603344 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/sync v0.1.0 // indirect
 )
