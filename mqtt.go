@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
@@ -14,14 +15,19 @@ import (
 type aquareaMQTT struct {
 	mqttClient     mqtt.Client
 	commandChannel chan aquareaCommand
+	online         atomic.Bool // last known availability, re-announced on (re)connect
 }
 
 func mqttHandler(ctx context.Context, wg *sync.WaitGroup, config configType, dataChannel chan map[string]string, commandChannel chan aquareaCommand, statusChannel chan bool) {
 	defer wg.Done()
 	log.Println("Starting MQTT handler")
-	mqttKeepalive, err := time.ParseDuration(config.MqttKeepalive)
-	if err != nil {
-		log.Fatal(err)
+	mqttKeepalive := 30 * time.Second // MQTT spec default
+	if config.MqttKeepalive != "" {
+		var err error
+		mqttKeepalive, err = time.ParseDuration(config.MqttKeepalive)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	var mqttInstance aquareaMQTT
@@ -59,6 +65,10 @@ func (am *aquareaMQTT) makeMQTTConn(mqttServer string, mqttPort int, mqttLogin, 
 	opts.SetOnConnectHandler(func(c mqtt.Client) {
 		log.Println("MQTT connected")
 		c.Subscribe("aquarea/+/settings/+/set", 2, am.handleSubscription)
+		// Re-announce availability: the Aquarea login can complete before the
+		// first broker connection is up, and with CleanSession paho silently
+		// drops publishes made before CONNACK (it resets the outbound store).
+		am.publishStatus()
 	})
 
 	opts.SetWill("aquarea/status", "offline", byte(0), true)
@@ -73,11 +83,14 @@ func (am *aquareaMQTT) makeMQTTConn(mqttServer string, mqttPort int, mqttLogin, 
 }
 
 func (am *aquareaMQTT) setStatus(online bool) {
-	var status string
-	if online {
+	am.online.Store(online)
+	am.publishStatus()
+}
+
+func (am *aquareaMQTT) publishStatus() {
+	status := "offline"
+	if am.online.Load() {
 		status = "online"
-	} else {
-		status = "offline"
 	}
 	am.mqttClient.Publish("aquarea/status", byte(0), true, status)
 }
@@ -96,8 +109,13 @@ func (am *aquareaMQTT) handleSubscription(mclient mqtt.Client, msg mqtt.Message)
 func (am *aquareaMQTT) publish(data map[string]string) {
 	for key, value := range data {
 		token := am.mqttClient.Publish(key, byte(0), true, value)
-		if token.Wait() && token.Error() != nil {
-			fmt.Printf("Fail to publish, %v", token.Error())
+		// With CleanSession, messages published before CONNACK are dropped from
+		// the store on connect and their token never completes - waiting on it
+		// would hang the handler forever. The next poll re-sends the data.
+		if am.mqttClient.IsConnectionOpen() {
+			if token.Wait() && token.Error() != nil {
+				log.Printf("Fail to publish to %s: %v", key, token.Error())
+			}
 		}
 	}
 }
