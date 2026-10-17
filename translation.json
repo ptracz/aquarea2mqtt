@@ -89,6 +89,15 @@
     "function-status-text-068": {
         "name":  "TankHeaterOperatingTime"
     },
+    "function-status-text-123": {
+        "name": "DHWCirculation"
+    },
+    "function-status-text-124": {
+        "name": "WaterPressure"
+    },
+    "function-status-text-126": {
+        "name": "Zone2PumpSpeed"
+    },
     "function-setting-user-select-003": {
         "name": "Operation",
         "kind": "basic",
@@ -189,6 +198,14 @@
             "0x04": "2010-0181"
         }
     },
+	"function-setting-user-select-029": {
+        "name": "QuietModePriority",
+        "kind": "basic",
+        "values": {
+            "0x01": "2010-0182",
+            "0x02": "2010-0183"
+        }
+    },
     "function-setting-user-select-030": {
         "name": "RoomHeater",
         "kind": "basic",
@@ -243,6 +260,859 @@
         "kind": "basic",
         "values": {
             "0x01": "2010-01C2"
+        }
+    },
+
+    "valueTranslations": {
+        "2006-0100": "System status",
+        "2006-0110": "Operation",
+        "2006-0120": "Mode",
+        "2006-0130": "Inlet water",
+        "2006-0140": "Outlet water",
+        "2006-0150": "Zone1 temp.",
+        "2006-0160": "set",
+        "2006-0170": "water",
+        "2006-0180": "Zone2 temp.",
+        "2006-0190": "set",
+        "2006-01A0": "water",
+        "2006-01B0": "DHW tank",
+        "2006-01C0": "set",
+        "2006-01D0": "Buffer tank",
+        "2006-01E0": "Outdoor temp.",
+        "2006-0300": "Off",
+        "2006-0310": "On",
+        "2006-0320": "Tank",
+        "2006-0325": "Heat",
+        "2006-032A": "Cool",
+        "2006-032F": "Auto (Heat)",
+        "2006-0334": "Auto (Cool)",
+        "2006-0339": "Heat + Tank",
+        "2006-033E": "Cool + Tank",
+        "2006-0343": "Auto (Heat) + Tank",
+        "2006-0348": "Auto (Cool) + Tank",
+        "2006-0600": "Thermo",
+        "2006-0610": "Water flow",
+        "2006-0620": "Pump speed",
+        "2006-0630": "3-way valve",
+        "2006-0640": "Room heater",
+        "2006-0650": "Tank heater",
+        "2006-0660": "Defrost",
+        "2006-0670": "Solar",
+        "2006-0680": "Solar temp.",
+        "2006-0690": "Bivalent",
+        "2006-06A0": "Error",
+        "2006-0900": "Off",
+        "2006-0910": "On",
+        "2006-0940": "Room",
+        "2006-0950": "Tank",
+        "2006-0960": "Off",
+        "2006-0970": "On",
+        "2006-0980": "Off",
+        "2006-0990": "On",
+        "2006-09A0": "Off",
+        "2006-09B0": "On",
+        "2006-09C0": "Off",
+        "2006-09D0": "On",
+        "2006-09F0": "Off",
+        "2006-0A00": "On",
+        "2006-0A10": "Auto",
+        "2006-0A20": "Dry",
+        "2006-0A30": "Heat",
+        "2006-0A40": "Cool",
+        "2006-0A50": "Fan",
+        "2006-0A60": "Lo",
+        "2006-0A70": "Me-",
+        "2006-0A80": "Me",
+        "2006-0A90": "Me+",
+        "2006-0B00": "Hi",
+        "2006-0B10": "SHi",
+        "2006-0B20": "Auto",
+        "2006-0B30": "Swing",
+        "2006-0B40": "Auto",
+        "2006-0B50": "1",
+        "2006-0B60": "2",
+        "2006-0B70": "3",
+        "2006-0B80": "4",
+        "2006-0B90": "5",
+        "2006-0C00": "Compressor",
+        "2006-0C10": "Compressor frequency",
+        "2006-0C20": "Operating time",
+        "2006-0C30": "Number of operations",
+        "2006-0D00": "Room heater",
+        "2006-0D10": "Heater capacity",
+        "2006-0D20": "Operating time",
+        "2006-0E00": "Tank heater",
+        "2006-0E10": "Operating time",
+        "2006-0E20": "IDU",
+        "2006-0E30": "Mode",
+        "2006-0E40": "AUTO COMFORT",
+        "2006-0E50": "Temperature setting",
+        "2006-0E60": "Fan speed setting",
+        "2006-0E70": "Air swing setting(Left-Right)",
+        "2006-0E80": "Air swing setting(Up-Down)",
+        "2006-0E90": "Powerful",
+        "2006-0F00": "Quiet",
+        "2006-0F10": "nanoe",
+        "2006-0F20": "nanoe X",
+        "2006-0F30": "ECONAVI",
+        "2006-0F40": "Indoor air temperature",
+        "2006-0F50": "Connection",
+        "2006-0F60": "Serial No. ",
+        "2006-0F70": "DHW circulation",
+        "2006-0F80": "Water pressure ",
+        "2006-0F90": "Zone 2 pump speed",
+        "2006-0G00": "Swing",
+        "2006-0G10": "Auto",
+        "2006-0G20": "STEP1",
+        "2006-0G30": "STEP2",
+        "2006-0G40": "STEP3",
+        "2006-0G50": "STEP4",
+        "2006-0G60": "STEP5",
+        "2006-0H00": "0",
+        "2006-1000": "Heater",
+        "2006-1010": "Outlet water temperature target",
+        "2006-1020": "pump",
+        "2006-1030": "mixing valve",
+        "2006-1040": "pump",
+        "2006-1050": "mixing valve",
+        "2006-1060": "DHW circulation",
+        "2006-1070": "Zone 2 pump speed",
+        "2006-1080": "SG ready: control pattern",
+        "2006-1090": "Sterilization",
+        "2006-10A0": "Energy",
+        "2006-10B0": "Heat mode consumption",
+        "2006-10C0": "Heat mode generation",
+        "2006-10D0": "Cool mode consumption",
+        "2006-10E0": "Cool mode generation",
+        "2006-10F0": "Tank mode consumption",
+        "2006-1100": "Tank mode generation",
+        "2006-1110": "Backup heater",
+        "2006-1120": "Backup heater 1 status",
+        "2006-1130": "Backup heater 2 status",
+        "2006-1140": "Backup heater 3 status",
+        "2006-1150": " Operating time",
+        "2006-1160": "Outdoor",
+        "2006-1170": "target",
+        "2006-1200": "Off",
+        "2006-1210": "On",
+        "2006-1220": "Off",
+        "2006-1230": "On",
+        "2006-1240": "Off",
+        "2006-1250": "On",
+        "2006-1260": "Normal",
+        "2006-1270": "HP stop",
+        "2006-1280": "Capacity 1",
+        "2006-1290": "Capacity 2",
+        "2006-12A0": "Off",
+        "2006-12B0": "On",
+        "2006-12C0": "Off",
+        "2006-12D0": "On",
+        "2006-12E0": "Off",
+        "2006-12F0": "On",
+        "2006-1300": "Off",
+        "2006-1310": "On",
+        "2006-1400": "Defrost temp",
+        "2006-1410": "Outdoor piping temp",
+        "2006-1420": "EVA outlet temp",
+        "2006-1430": "Outdoor current",
+        "2006-1440": "Expansion valve",
+        "2006-1450": "Expansion valve (bypass)",
+        "2006-1460": "FAN 1 speed",
+        "2006-1470": "FAN 2 speed",
+        "2006-1480": "Discharge temp",
+        "2006-1490": "Bypass outlet temp.",
+        "2006-14A0": "4-way valve",
+        "2006-14B0": "Indoor piping temp",
+        "2006-14C0": "Compressor frequency",
+        "2006-14D0": "Operating time",
+        "2006-14E0": "No. of operations",
+        "2006-14F0": "Flow",
+        "2006-1500": "Room heater ",
+        "2006-1510": "Heater capacity",
+        "2006-1520": "Operating time",
+        "2006-1530": "Outlet water temp",
+        "2006-1540": "Pump speed",
+        "2006-1550": "Pressure",
+        "2006-1560": "Inlet water temp",
+        "2006-1570": "Outdoor heat exchanger middle temp.",
+        "2006-1580": "Economizer outlet temp",
+        "2006-1590": "Bypass inlet temp",
+        "2006-1600": "Economizer",
+        "2006-1620": "Outside air",
+        "2006-1630": "Compressor",
+        "2006-1640": "Plate Heat exchanger",
+        "2006-1650": "Heat exchanger",
+        "2006-1660": "Subcooler",
+        "2006-1700": "Off",
+        "2006-1710": "On",
+        "2006-1720": "Tank",
+        "2006-1730": "Heat",
+        "2006-1740": "Cool",
+        "2006-1750": "Defrost",
+        "2006-1760": "Error code",
+        "2006-1770": "Date",
+        "2006-1780": "LIVE",
+        "2006-1800": "Error list",
+        "2006-1810": "Calendar",
+        "2006-1820": "Set the time:",
+        "2006-2010": "No data near previous date, timestamp shown is closest.",
+        "2006-2020": "There is no data available close to the previous date. The displayed timestamp is the closest available",
+        "2006-2030": "Due to CN-CNT communication issue, the closest available data is <%%0%%> seconds before the error event",
+        "2006-2040": "No data is available around the selected error event or date. Please select a different error event or date.",
+        "2006-2050": "data not found nerby",
+        "2006-2060": "data not found",
+        "2010-0069": "User",
+        "2010-006E": "Installer",
+        "2010-0073": "User setting",
+        "2010-0078": "Operation",
+        "2010-007D": "Operation mode",
+        "2010-0082": "Zone target temperature",
+        "2010-0087": "Tank target temperature ",
+        "2010-008C": "Zone operation setting",
+        "2010-0091": "Force DHW",
+        "2010-0096": "Weekly timer",
+        "2010-009B": "Holiday mode",
+        "2010-00A0": "Quiet timer",
+        "2010-00A5": "Quiet mode",
+        "2010-00AA": "Room heater",
+        "2010-00AF": "Tank heater",
+        "2010-00B4": "Sterilization",
+        "2010-00B7": "Tank sensor",
+        "2010-00B9": "Powerful",
+        "2010-00BE": "Force heater",
+        "2010-00C3": "Force defrost",
+        "2010-00C8": "User screen link",
+        "2010-00CD": "Error reset",
+        "2010-00D2": "Set",
+        "2010-00D7": "Power: Off",
+        "2010-00DC": "Power: On",
+        "2010-00E1": "Tank",
+        "2010-00E6": "Heat",
+        "2010-00EB": "Cool",
+        "2010-00F0": "Auto",
+        "2010-00F5": "Heat + Tank",
+        "2010-00FA": "Cool + Tank",
+        "2010-00FF": "Auto + Tank",
+        "2010-0109": "Zone1 for Heat: <%%0%%>°C",
+        "2010-010E": "Zone2 for Heat: <%%0%%>°C",
+        "2010-0113": "Zone1 for Cool: <%%0%%>°C",
+        "2010-0118": "Zone2 for Cool: <%%0%%>°C",
+        "2010-011D": "<%%0%%>°C",
+        "2010-0122": "Zone1: On, Zone2: Off",
+        "2010-0127": "Zone1: Off, Zone2: On",
+        "2010-012C": "Zone1: On, Zone2: On",
+        "2010-0136": "Off",
+        "2010-013B": "On",
+        "2010-0140": "Off",
+        "2010-0145": "On",
+        "2010-014A": "Off",
+        "2010-014F": "On",
+        "2010-0154": "Heat shift temp: Off",
+        "2010-0159": "Heat shift temp: <%%0%%>°C",
+        "2010-015E": "Tank shift temp: Off",
+        "2010-0163": "Tank shift temp: <%%0%%>°C",
+        "2010-0168": "Off",
+        "2010-016D": "On",
+        "2010-0172": "Off",
+        "2010-0177": "Level1",
+        "2010-017C": "Level2",
+        "2010-0181": "Level3",
+        "2010-0182": "Priority: Sound",
+        "2010-0183": "Priority: Capacity",
+        "2010-0186": "Off",
+        "2010-018B": "On",
+        "2010-0190": "Off",
+        "2010-0195": "On",
+        "2010-0197": "Top",
+        "2010-0198": "Center",
+        "2010-019A": "Request",
+        "2010-01A4": "Off",
+        "2010-01A9": "On 30 mins",
+        "2010-01AE": "On 60 mins",
+        "2010-01B3": "On 90 mins",
+        "2010-01B8": "Off",
+        "2010-01BD": "On",
+        "2010-01C2": "Request",
+        "2010-0451": "System setup",
+        "2010-0456": "Optional PCB connection",
+        "2010-045B": "Zone & sensor",
+        "2010-0460": "Heater capacity",
+        "2010-0465": "Anti freezing",
+        "2010-046A": "Tank connection",
+        "2010-046F": "Buffer tank connection",
+        "2010-0474": "Tank heater",
+        "2010-0479": "Base pan heater",
+        "2010-047E": "Alternative outdoor sensor",
+        "2010-0483": "Bivalent connection",
+        "2010-0488": "External SW",
+        "2010-048D": "Solar connection",
+        "2010-0492": "External error signal",
+        "2010-0497": "Demand control",
+        "2010-049C": "SG ready",
+        "2010-04A1": "External compressor SW",
+        "2010-04AB": "Heat-Cool SW",
+        "2010-04AE": "Pump flowrate",
+        "2010-04AF": "Force DHW",
+        "2010-04B0": "Error reset",
+        "2010-04B1": "Heating control",
+        "2010-04B5": "Set",
+        "2010-04BA": "No",
+        "2010-04BF": "Yes",
+        "2010-04C4": "1 zone",
+        "2010-04C9": "2 zone",
+        "2010-04CE": "Zone1: Room",
+        "2010-04D3": "Zone1: Pool",
+        "2010-04D8": "Room sensor: Water temperature",
+        "2010-04DD": "Room sensor: External thermostat",
+        "2010-04E2": "Room sensor: Internal thermostat",
+        "2010-04E7": "Room sensor: Thermistor",
+        "2010-04EC": "ΔT for pool: <%%0%%>°C",
+        "2010-04F1": "Zone2: Room",
+        "2010-04F6": "Zone2: Pool",
+        "2010-04FB": "Room sensor: Water temperature",
+        "2010-0500": "Room sensor: External thermostat",
+        "2010-0505": "Room sensor: Internal thermostat",
+        "2010-050A": "Room sensor: Thermistor",
+        "2010-050F": "ΔT for pool: <%%0%%>°C",
+        "2010-0514": "3 kW",
+        "2010-0519": "6 kW",
+        "2010-051E": "9 kW",
+        "2010-0523": "No",
+        "2010-0528": "Yes",
+        "2010-052D": "No",
+        "2010-052F": "DHW capacity：Variable",
+        "2010-0530": "DHW capacity：Standard",
+        "2010-0532": "Yes",
+        "2010-0537": "No",
+        "2010-053C": "Yes",
+        "2010-0541": "ΔT for buffer tank: <%%0%%>°C",
+        "2010-0546": "Internal",
+        "2010-054B": "External",
+        "2010-0555": "Heater on: <%%0%%> mins",
+        "2010-055A": "No",
+        "2010-055F": "Yes (type A)",
+        "2010-0564": "Yes (type B)",
+        "2010-056E": "No",
+        "2010-0573": "Yes",
+        "2010-0578": "No",
+        "2010-057D": "Yes",
+        "2010-057F": "Auto",
+        "2010-0580": "SG ready",
+        "2010-0581": "Smart",
+        "2010-0582": "Turn on outdoor temperature: <%%0%%>°C",
+        "2010-0587": "Control pattern: Alternative",
+        "2010-058C": "Control pattern : Parallel",
+        "2010-0591": "Control pattern : Advance parallel",
+        "2010-0593": "External pump：Off",
+        "2010-0594": "External pump：On",
+        "2010-0596": "Heat: No",
+        "2010-059B": "Heat: Yes",
+        "2010-05A0": "Heat start target outdoor temperature: <%%0%%>°C",
+        "2010-05A5": "Heat start delay time: <%%0%%> mins",
+        "2010-05AA": "Heat stop target outdoor temperature: <%%0%%>°C",
+        "2010-05AF": "Heat stop delay time: <%%0%%> mins",
+        "2010-05B4": "DHW: No",
+        "2010-05B9": "DHW : Yes",
+        "2010-05BE": "DHW start delay time: <%%0%%> mins",
+        "2010-05C3": "No",
+        "2010-05C8": "Yes",
+        "2010-05CD": "No",
+        "2010-05D2": "Yes (Buffer tank)",
+        "2010-05D7": "Yes (DHW tank)",
+        "2010-05E1": "Solar ΔT turn on: <%%0%%>°C",
+        "2010-05E6": "Solar ΔT turn off: <%%0%%>°C",
+        "2010-05EB": "Solar anti freezing: <%%0%%>°C",
+        "2010-05F0": "Solar high limit: <%%0%%>°C",
+        "2010-05F5": "No",
+        "2010-05FA": "Yes",
+        "2010-05FF": "No",
+        "2010-0604": "Yes",
+        "2010-0609": "No",
+        "2010-060E": "Yes",
+        "2010-0613": "Tank capacity 1: <%%0%%>%",
+        "2010-0618": "Heat capacity 1: <%%0%%>%",
+        "2010-061A": "Cool capacity 1: <%%0%%>℃",
+        "2010-061D": "Tank capacity 2: <%%0%%>%",
+        "2010-0622": "Heat capacity 2: <%%0%%>%",
+        "2010-0624": "Cool capacity 2: <%%0%%>℃",
+        "2010-0627": "No",
+        "2010-062C": "Yes",
+        "2010-062E": "External compressor SW : Heat source",
+        "2010-062F": "External compressor SW : Heater",
+        "2010-0631": "No",
+        "2010-0636": "Yes",
+        "2010-0639": "ΔT",
+        "2010-063A": "Maximum duty",
+        "2010-063D": "Maximum duty : <%%0%%>",
+        "2010-063E": "Zone 2 Duty : <%%0%%>",
+        "2010-0640": "Manual",
+        "2010-0641": "Auto",
+        "2010-0644": "DHW Defrost : No",
+        "2010-0645": "DHW Defrost : Yes",
+        "2010-0647": "Comfort",
+        "2010-0648": "Efficiency",
+        "2010-0649": "Extra pump",
+        "2010-0650": "External heater",
+        "2010-0651": "No",
+        "2010-0652": "Heat",
+        "2010-0653": "DHW",
+        "2010-0654": "Capacity",
+        "2010-0655": "Power Consumption",
+        "2010-0656": "Tank Consumption 1 : <%%0%%>kW",
+        "2010-0657": "Heat Consumption 1 : <%%0%%>kW",
+        "2010-0658": "Cool Consumption 1 : <%%0%%>kW",
+        "2010-0659": "Tank Consumption 2 : <%%0%%>kW",
+        "2010-0660": "Heat Consumption 2 : <%%0%%>kW",
+        "2010-0661": "Cool Consumption 2 : <%%0%%>kW",
+        "2010-0662": "Efficiency Stage1 : <%%0%%>",
+        "2010-0663": "Efficiency Stage2 : <%%0%%>",
+        "2010-0664": "Efficiency Stage3 : <%%0%%>",
+        "2010-0665": "Mode : Comfort",
+        "2010-0666": "Mode : Efficiency",
+        "2010-0667": "No",
+        "2010-0668": "Yes",
+        "2010-0669": "No",
+        "2010-066A": "Yes",
+        "2010-066B": "Comfort",
+        "2010-066C": "Efficiency",
+        "2010-066D": "HPU stop consumption : <%%0%%>kW",
+        "2010-066E": "Static pressure",
+        "2010-066F": "Cooling capacity",
+        "2010-0670": "6 kW",
+        "2010-0671": "12 kW",
+        "2010-0672": "18 kW",
+        "2010-0673": "1 Heater",
+        "2010-0674": "2 Heater",
+        "2010-0675": "3 Heater",
+        "2010-0676": "In-line",
+        "2010-0677": "Buffer tank",
+        "2010-0678": "18kW or less",
+        "2010-0679": "Over 18kW",
+        "2010-0839": "Operation setup",
+        "2010-083E": "Heat",
+        "2010-0843": "Water temperature for heating on",
+        "2010-0848": "Compensation curve",
+        "2010-084D": "Direct",
+        "2010-0852": "Cool",
+        "2010-0857": "Water temperature for cooling on",
+        "2010-085C": "Compensation curve",
+        "2010-0861": "Direct",
+        "2010-0866": "Auto",
+        "2010-086B": "Tank",
+        "2010-086C": "Zone1",
+        "2010-086D": "Zone2",
+        "2010-086E": "Other",
+        "2010-0870": "Compensation curve",
+        "2010-0875": "Direct",
+        "2010-087A": "<%%0%%>°C",
+        "2010-087F": "<%%0%%>°C",
+        "2010-0884": "<%%0%%>°C",
+        "2010-0889": "<%%0%%>°C",
+        "2010-088E": "<%%0%%>°C",
+        "2010-0893": "<%%0%%>°C",
+        "2010-0898": "<%%0%%>°C",
+        "2010-089D": "<%%0%%>°C",
+        "2010-08A2": "Zone1 water temperature: <%%0%%>°C",
+        "2010-08A7": "Zone2 water temperature: <%%0%%>°C",
+        "2010-08AC": "ΔT for heating on: <%%0%%>°C",
+        "2010-08B1": "Outdoor temperature for heating off: <%%0%%>°C",
+        "2010-08B6": "Outdoor temperature for heater on: <%%0%%>°C",
+        "2010-08B8": "Heater on delay time : <%%0%%>min",
+        "2010-08B9": "Heater on ΔT of target temp : <%%0%%>℃",
+        "2010-08BA": "Heater off ΔT of target temp : <%%0%%>℃",
+        "2010-08BB": "Compensation curve",
+        "2010-08C0": "Direct",
+        "2010-08C1": "Other",
+        "2010-08C5": "<%%0%%>°C",
+        "2010-08CA": "<%%0%%>°C",
+        "2010-08CF": "<%%0%%>°C",
+        "2010-08D4": "<%%0%%>°C",
+        "2010-08D9": "<%%0%%>°C",
+        "2010-08DA": "Zone1",
+        "2010-08DB": "Zone2",
+        "2010-08DE": "<%%0%%>°C",
+        "2010-08E3": "<%%0%%>°C",
+        "2010-08E8": "<%%0%%>°C",
+        "2010-08ED": "Zone1 water temperature: <%%0%%>°C",
+        "2010-08F2": "Zone2 water temperature: <%%0%%>°C",
+        "2010-08F7": "ΔT for cooling on: <%%0%%>°C",
+        "2010-08FC": "Outdoor temperature for (heat to cool): <%%0%%>°C",
+        "2010-0901": "Outdoor temperature for (cool to heat): <%%0%%>°C",
+        "2010-0906": "Room operation time (maximum):  <%%0%%>",
+        "2010-090B": "Tank heat up time (maximum):  <%%0%%>",
+        "2010-0910": "Tank re-heat temperature: <%%0%%>°C",
+        "2010-0915": "Sterilization boiling temperature: <%%0%%>°C",
+        "2010-091A": "Sterilization operation time (maximum):  <%%0%%>",
+        "2010-091B": "Force DHW start temperature : <%%0%%>℃",
+        "2010-091C": "Heat on delay time : <%%0%%>min",
+        "2010-091D": "Outdoor temparture for heating on : <%%0%%>℃",
+        "2010-0C21": "Service status",
+        "2010-0C2B": "Pump",
+        "2010-0C2D": "Pump down",
+        "2010-0C30": "Dry concrete",
+        "2010-0C35": "Cool mode",
+        "2010-0C3A": "Back-up heater",
+        "2010-0C3B": "Anti-stick mode",
+        "2010-0C49": "Maximum duty: <%%0%%>",
+        "2010-0C4E": "Off",
+        "2010-0C53": "On",
+        "2010-0C58": "Pump: Off",
+        "2010-0C5D": "Pump: On",
+        "2010-0C62": "Pump: Air purge",
+        "2010-0C67": "Off",
+        "2010-0C6C": "On",
+        "2010-0C71": "Water set temperature: <%%0%%>°C",
+        "2010-0C76": "Disable",
+        "2010-0C7B": "Enable",
+        "2010-0C80": "Disable",
+        "2010-0C85": "Enable",
+        "2010-0C86": "Zone 2 Duty : <%%0%%>",
+        "2010-0C87": "Disable",
+        "2010-0C88": "Zone 2 pump : Off",
+        "2010-0C89": "Zone 2 pump : On",
+        "2010-0C90": "Enable",
+        "2010-0DB1": "Discard change?",
+        "2010-0DB6": "Send error reset request?",
+        "2010-0DBB": "Send setting request?",
+        "2010-0DBE": "Now setting",
+        "2010-0DC1": "ID",
+        "2010-0DC3": "Start time",
+        "2010-0DC5": "Setting complete.",
+        "2010-0DCA": "The upper limit value of range must be greater than the lower limit value. Check and correct coloring items.",
+        "2010-0E01": "Maintenance setup",
+        "2010-0E02": "Sensor setup",
+        "2010-0E51": "Outdoor Th : <%%0%%>℃",
+        "2010-0E52": "Remote control Th1 : <%%0%%>℃",
+        "2010-0E53": "Tank Th : <%%0%%>℃",
+        "2010-0E54": "Inlet Th : <%%0%%>℃",
+        "2010-0E55": "Outlet Th : <%%0%%>℃",
+        "2010-0E56": "Remote control Th2 : <%%0%%>℃"
+    },
+
+    "statisticsNames": {
+        "0": {
+            "name": "Operation",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "1": {
+            "name": "DryConcrete",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "2": {
+            "name": "Mode",
+            "values": {"1": "Tank", "2": "Heat", "3": "Cool", "8": "Auto", "9": "Auto"}
+        },
+        "3": {
+            "name": "Tank",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "4": {
+            "name": "Zone1-Zone2On-Off",
+            "values": {"1": "On-Off", "2": "Off-On", "3": "On-On"}
+        },
+        "5": {
+            "name": "SHPControl",
+            "values": {"1": "Disable", "2": "Enable"}
+        },
+        "6": {
+            "name": "SHPFlowControl",
+            "values": {"1": "Disable", "2": "Enable"}
+        },
+        "7": {
+            "name": "Zone1SetTemperatureForHeatMode",
+            "unit": "°C"
+        },
+        "8": {
+            "name": "Zone1SetTemperatureForCoolMode",
+            "unit": "°C"
+        },
+        "9": {
+            "name": "Zone2SetTemperatureForHeatMode",
+            "unit": "°C"
+        },
+        "10": {
+            "name": "Zone2SetTemperatureForCoolMode",
+            "unit": "°C"
+        },
+        "11": {
+            "name": "TankWaterSetTemperature",
+            "unit": "°C"
+        },
+        "12": {
+            "name": "Co-EfficientFrequencyControl",
+            "unit": "%"
+        },
+        "13": {
+            "name": "CurrentLv",
+            "unit": "Lv"
+        },
+        "14": {
+            "name": "ExternalSW",
+            "values": {"1": "Close", "2": "Open"}
+        },
+        "15": {
+            "name": "Heat-CoolSW",
+            "values": {"1": "Heat", "2": "Cool"}
+        },
+        "16": {
+            "name": "PowerfulActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "17": {
+            "name": "QuietActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "18": {
+            "name": "3-WayValve",
+            "values": {"1": "Room", "2": "Tank"}
+        },
+        "19": {
+            "name": "DefrostActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "20": {
+            "name": "RoomHeaterActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "21": {
+            "name": "TankHeaterActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "22": {
+            "name": "SolarActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "23": {
+            "name": "BivalentActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "24": {
+            "name": "CurrentErrorStatus",
+            "values": {"0": "No error pop up screen in RC LCD", "1": "Error pop up screen in RC LCD"}
+        },
+        "25": {
+            "name": "BackupHeater1StatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "26": {
+            "name": "BackupHeater2StatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "27": {
+            "name": "BackupHeater3StatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "28": {
+            "name": "DHWCirculation",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "29": {
+            "name": "2ZonePump1StatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "30": {
+            "name": "2ZonePump2StatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "31": {
+            "name": "SterilizationStatusActual",
+            "values": {"1": "Off", "2": "On"}
+        },
+        "32": {
+            "name": "ElectricalAnodeActual",
+            "values": {"1": "Off", "2": "On", "3": "Error"}
+        },
+        "33": {
+            "name": "SGReadyControlPattern",
+            "values": {"1": "Normal", "2": "HP stop", "3": "Capacity 1", "4": "Capacity 2"}
+        },
+        "34": {
+            "name": "WaterPressure",
+            "unit": "bar"
+        },
+        "35": {
+            "name": "WaterInlet2Temp",
+            "unit": "°C"
+        },
+        "36": {
+            "name": "EconomizerOutletTemp",
+            "unit": "°C"
+        },
+        "37": {
+            "name": "BypassInletTemp",
+            "unit": "°C"
+        },
+        "38": {
+            "name": "Zone1ActualTemperature",
+            "unit": "°C"
+        },
+        "39": {
+            "name": "Zone2ActualTemperature",
+            "unit": "°C"
+        },
+        "40": {
+            "name": "ActualTankTemperature",
+            "unit": "°C"
+        },
+        "41": {
+            "name": "ActualOutdoorTemperature",
+            "unit": "°C"
+        },
+        "42": {
+            "name": "InletWaterTemperature",
+            "unit": "°C"
+        },
+        "43": {
+            "name": "OutletWaterTemperature",
+            "unit": "°C"
+        },
+        "44": {
+            "name": "Zone1WaterTemperature",
+            "unit": "°C"
+        },
+        "45": {
+            "name": "Zone2WaterTemperature",
+            "unit": "°C"
+        },
+        "46": {
+            "name": "Zone1WaterTemperatureTarget",
+            "unit": "°C"
+        },
+        "47": {
+            "name": "Zone2WaterTemperatureTarget",
+            "unit": "°C"
+        },
+        "48": {
+            "name": "BufferTankWaterTemperature",
+            "unit": "°C"
+        },
+        "49": {
+            "name": "SolarWaterTemperature",
+            "unit": "°C"
+        },
+        "50": {
+            "name": "PoolWaterTemperature",
+            "unit": "°C"
+        },
+        "51": {
+            "name": "OutletWaterTemperatureTarget",
+            "unit": "°C"
+        },
+        "52": {
+            "name": "Outlet2Temperature",
+            "unit": "°C"
+        },
+        "53": {
+            "name": "DischargeTemperature",
+            "unit": "°C"
+        },
+        "54": {
+            "name": "RC-1RoomThermostatInternalSensorTemperature",
+            "unit": "°C"
+        },
+        "55": {
+            "name": "IndoorPipingTemperature",
+            "unit": "°C"
+        },
+        "56": {
+            "name": "OutdoorPipingTemperature",
+            "unit": "°C"
+        },
+        "57": {
+            "name": "DefrostTemperature",
+            "unit": "°C"
+        },
+        "58": {
+            "name": "EVAOutletTemperature",
+            "unit": "°C"
+        },
+        "59": {
+            "name": "BypassOutletTemperature",
+            "unit": "°C"
+        },
+        "60": {
+            "name": "IPMTemperature",
+            "unit": "°C"
+        },
+        "61": {
+            "name": "HighPressure",
+            "unit": "kgf/cm2"
+        },
+        "62": {
+            "name": "LowPressure",
+            "unit": "kgf/cm2"
+        },
+        "63": {
+            "name": "OutdoorCurrent",
+            "unit": "A"
+        },
+        "64": {
+            "name": "CompressorFrequency",
+            "unit": "Hz"
+        },
+        "65": {
+            "name": "PumpFlowRate",
+            "unit": "L/min"
+        },
+        "66": {
+            "name": "PumpSpeed",
+            "unit": "r/min"
+        },
+        "67": {
+            "name": "PumpDuty",
+            "unit": "duty"
+        },
+        "68": {
+            "name": "FanMotorSpeed1",
+            "unit": "r/min"
+        },
+        "69": {
+            "name": "FanMotorSpeed2",
+            "unit": "r/min"
+        },
+        "70": {
+            "name": "2ZoneMixingValve1Opening",
+            "unit": "sec"
+        },
+        "71": {
+            "name": "2ZoneMixingValve2Opening",
+            "unit": "sec"
+        },
+        "72": {
+            "name": "HeatModeEnergyConsumption",
+            "unit": "kW"
+        },
+        "73": {
+            "name": "Zone2PumpSpeed",
+            "unit": "rpm"
+        },
+        "74": {
+            "name": "HeatModeEnergyGeneration",
+            "unit": "kW"
+        },
+        "75": {
+            "name": "OutdoorHeatExchangerMiddleTemperature",
+            "unit": "℃"
+        },
+        "76": {
+            "name": "STD/T-CapCoolModeEnergyConsumption,Eco-FlexCoolModeEnergyConsumption",
+            "unit": "kW"
+        },
+        "77": {
+            "name": "STD/T-CapCoolModeEnergyGeneration,Eco-FlexHeatRecoveryModeEnergyGeneration",
+            "unit": "kW"
+        },
+        "78": {
+            "name": "TankModeEnergyConsumption",
+            "unit": "kW"
+        },
+        "79": {
+            "name": "TankModeEnergyGeneration",
+            "unit": "kW"
+        },
+        "80": {
+            "name": "RC-2RoomThermostatInternalSensorTemperature",
+            "unit": "°C"
         }
     }
 }

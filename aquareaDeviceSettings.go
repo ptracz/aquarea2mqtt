@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Settings panel
+// TODO: change to API and usec JSON for parsing responses instead of regex
 func (aq *aquarea) sendSetting(cmd aquareaCommand) error {
 	if cmd.value == "----" {
 		log.Println("Dummy value - not sending to Aquarea Service Cloud")
@@ -28,8 +28,14 @@ func (aq *aquarea) sendSetting(cmd aquareaCommand) error {
 	switch functionInfo.Kind {
 	case "basic":
 		//reverse translation from friendly name to xxxx-yyyy code and then to hex value
-		cmd.value = aq.reverseDictionaryWebUI[cmd.value]
-		cmd.value = functionInfo.reverseValues[cmd.value]
+		crypticCode, ok := aq.reverseValueTrans[cmd.value]
+		if !ok {
+			return fmt.Errorf("no value translation for setting %s value %q - add it to valueTranslations in translation.json", cmd.setting, cmd.value)
+		}
+		cmd.value, ok = functionInfo.reverseValues[crypticCode]
+		if !ok {
+			return fmt.Errorf("no hex value for setting %s code %q - add it to values in translation.json", cmd.setting, crypticCode)
+		}
 
 	case "placeholder":
 		i, _ := strconv.ParseInt(cmd.value, 0, 16)
@@ -41,10 +47,6 @@ func (aq *aquarea) sendSetting(cmd aquareaCommand) error {
 	}
 
 	user := aq.usersMap[cmd.deviceID]
-	shiesuahruefutohkun, err := aq.getEndUserShiesuahruefutohkun(user)
-	if err != nil {
-		return err
-	}
 
 	values := url.Values{
 		"var.deviceId":            {user.DeviceID},
@@ -52,21 +54,19 @@ func (aq *aquarea) sendSetting(cmd aquareaCommand) error {
 		"var.preMode":             {aq.aquareaSettings.SettingsBackgroundData["0xE0"].Value},
 		"var.preTank":             {aq.aquareaSettings.SettingsBackgroundData["0xE1"].Value},
 		"var." + functionNamePOST: {cmd.value},
-		"shiesuahruefutohkun":     {shiesuahruefutohkun},
 	}
 
 	log.Printf("Setting %s to %s on %s", cmd.setting, cmd.value, cmd.deviceID)
 
-	_, err = aq.httpPost(aq.AquareaServiceCloudURL+"/installer/api/function/setting/user/set", values)
+	_, err := aq.httpPost(aq.AquareaServiceCloudURL+"/installer/api/function/setting/user/set", values)
 	//TODO parse output json, check error code
 	//TODO usec check api to confirm settings are applied before returning
 	return err
 }
 
-func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON, shiesuahruefutohkun string) (map[string]string, error) {
+func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON) (map[string]string, error) {
 	b, err := aq.httpPost(aq.AquareaServiceCloudURL+"/installer/api/function/setting/get", url.Values{
-		"var.deviceId":        {user.DeviceID},
-		"shiesuahruefutohkun": {shiesuahruefutohkun},
+		"var.deviceId": {user.DeviceID},
 	})
 	if err != nil {
 		return nil, err
@@ -74,6 +74,9 @@ func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON, shiesuahruefutohku
 	err = json.Unmarshal(b, &aq.aquareaSettings)
 	if err != nil {
 		return nil, err
+	}
+	if aq.aquareaSettings.ErrorCode != 0 {
+		return nil, fmt.Errorf("settings error code: %d", aq.aquareaSettings.ErrorCode)
 	}
 
 	settings := make(map[string]string)
@@ -89,11 +92,11 @@ func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON, shiesuahruefutohku
 			switch val.Type {
 			case "basic-text":
 				// not used in user settings
-				value = aq.dictionaryWebUI[val.TextValue]
+				value = aq.lookupValue(key, val.TextValue)
 			case "select":
 				switch translation.Kind {
 				case "basic":
-					value = aq.dictionaryWebUI[translation.Values[val.SelectedValue]]
+					value = aq.lookupValue(key, translation.Values[val.SelectedValue])
 
 					// post possible values to a subtopic
 					var allOptions string
@@ -104,7 +107,7 @@ func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON, shiesuahruefutohku
 						} else {
 							isFirst = false
 						}
-						allOptions += aq.dictionaryWebUI[option]
+						allOptions += aq.lookupValue(key, option)
 					}
 					settings[fmt.Sprintf("aquarea/%s/settings/%s/options", user.Gwid, translation.Name)] = allOptions
 				case "placeholder":
@@ -121,7 +124,7 @@ func (aq *aquarea) getDeviceSettings(user aquareaEndUserJSON, shiesuahruefutohku
 			}
 			settings[fmt.Sprintf("aquarea/%s/settings/%s", user.Gwid, translation.Name)] = value
 		} else {
-			log.Printf("No metadata in translation.json for: %s", key)
+			aq.warnOnce("metadata:"+key, "No metadata in translation.json for: %s", key)
 		}
 	}
 	return settings, err

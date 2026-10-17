@@ -67,7 +67,7 @@ func main() {
 	go mqttHandler(ctx, &wg, config, dataChannel, commandChannel, statusChannel)
 	go aquareaHandler(ctx, &wg, config, dataChannel, commandChannel, statusChannel)
 
-	termChan := make(chan os.Signal)
+	termChan := make(chan os.Signal, 1)
 	signal.Notify(termChan, syscall.SIGINT, syscall.SIGTERM)
 	<-termChan
 	log.Println("Shutting down")

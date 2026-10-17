@@ -53,21 +53,21 @@ func (am *aquareaMQTT) makeMQTTConn(mqttServer string, mqttPort int, mqttLogin, 
 	opts.SetKeepAlive(mqttKeepalive)
 
 	opts.SetCleanSession(true)  // don't want to receive entire backlog of setting changes
-	opts.SetAutoReconnect(true) // default, but I want it explicit
+	opts.SetAutoReconnect(true) // default, but I want it explicit (exponential backoff on reconnect)
+	opts.SetConnectRetry(true)  // keep retrying the initial connection while the broker is down
+	opts.SetConnectRetryInterval(30 * time.Second)
 	opts.SetOnConnectHandler(func(c mqtt.Client) {
+		log.Println("MQTT connected")
 		c.Subscribe("aquarea/+/settings/+/set", 2, am.handleSubscription)
 	})
 
 	opts.SetWill("aquarea/status", "offline", byte(0), true)
 
-	// connect to broker
+	// connect to broker; with ConnectRetry the client keeps trying in the
+	// background until the broker is up (publishes made meanwhile are queued),
+	// so the handler must not block on the token here
 	am.mqttClient = mqtt.NewClient(opts)
-
-	token := am.mqttClient.Connect()
-	if token.Wait() && token.Error() != nil {
-		log.Fatalf("Fail to connect broker, %v", token.Error())
-	}
-	log.Println("MQTT connected")
+	am.mqttClient.Connect()
 
 	am.setStatus(false) // offline till Service Cloud is connected
 }
