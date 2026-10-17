@@ -49,6 +49,7 @@ func readConfig() configType {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("Loaded config from %s (MqttKeepalive=%q, PoolInterval=%q)", configFile, config.MqttKeepalive, config.PoolInterval)
 	return config
 }
 
