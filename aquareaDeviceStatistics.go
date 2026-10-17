@@ -10,22 +10,23 @@ import (
 )
 
 // Gets most recent data from the statistics page
-func (aq *aquarea) getDeviceLogInformation(user aquareaEndUserJSON, shiesuahruefutohkun string) (map[string]string, error) {
+func (aq *aquarea) getDeviceLogInformation(user aquareaEndUserJSON) (map[string]string, error) {
 	// Build list of all possible values to log
 	var valueList strings.Builder
 	valueList.WriteString("{\"logItems\":[")
 	for i := range aq.logItems {
 		valueList.WriteString(strconv.Itoa(i))
-		valueList.WriteString(",")
+		if i < len(aq.logItems)-1 {
+			valueList.WriteString(",")
+		}
 	}
 	valueList.WriteString("]}")
 
 	b, err := aq.httpPost(aq.AquareaServiceCloudURL+"/installer/api/data/log", url.Values{
-		"var.deviceId":        {user.DeviceID},
-		"shiesuahruefutohkun": {shiesuahruefutohkun},
-		"var.target":          {"0"},
-		"var.startDate":       {fmt.Sprintf("%d000", time.Now().Unix()-aq.logSecOffset)},
-		"var.logItems":        {valueList.String()},
+		"var.deviceId":  {user.DeviceID},
+		"var.target":    {"0"},
+		"var.startDate": {fmt.Sprintf("%d000", time.Now().Unix()-aq.logSecOffset)},
+		"var.logItems":  {valueList.String()},
 	})
 	if err != nil {
 		return nil, err
@@ -34,6 +35,17 @@ func (aq *aquarea) getDeviceLogInformation(user aquareaEndUserJSON, shiesuahruef
 	err = json.Unmarshal(b, &aquareaLogData)
 	if err != nil {
 		return nil, err
+	}
+	if aquareaLogData.ErrorCode != 0 {
+		return nil, fmt.Errorf("log error code: %d", aquareaLogData.ErrorCode)
+	}
+	for _, m := range aquareaLogData.Message {
+		// e.g. "This device has already unregistered from the service."
+		aq.warnOnce("logmsg:"+m.ErrorCode, "data/log: %s (error code %s)", m.ErrorMessage, m.ErrorCode)
+	}
+	if aquareaLogData.LogData == "" {
+		// no data in log
+		return nil, nil
 	}
 
 	var deviceLog map[int64][]string

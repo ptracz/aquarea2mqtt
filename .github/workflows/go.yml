@@ -10,7 +10,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
 
     - name: Set up Go 2.x
@@ -26,16 +26,21 @@ jobs:
       run: |
         go get -v -t -d ./...
 
-    - name: Build
-      run: go build -v .
-
     - name: Test
       run: go test -v .
-      
+
+    - name: Build Windows amd64
+      run: CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -v -o aquarea2mqtt.exe .
+
+    - name: Build Linux ARMv7 32bit (Raspberry Pi 3)
+      run: CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -v -o aquarea2mqtt-linux-armv7 .
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
         # Artifact name
         name: aquarea2mqtt
         # A file, directory or wildcard pattern that describes what to upload
-        path: aquarea2mqtt.exe
+        path: |
+          aquarea2mqtt.exe
+          aquarea2mqtt-linux-armv7

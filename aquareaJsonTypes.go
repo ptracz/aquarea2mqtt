@@ -47,6 +47,10 @@ type aquareaLogDataJSON struct {
 	ErrorCode       int    `json:"errorCode"`
 	RecordingStatus int    `json:"recordingStatus"`
 	HistoryNo       string `json:"historyNo"`
+	Message         []struct {
+		ErrorMessage string `json:"errorMessage"`
+		ErrorCode    string `json:"errorCode"`
+	} `json:"message"`
 }
 
 type aquareaLoginJSON struct {
