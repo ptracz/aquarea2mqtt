@@ -12,7 +12,7 @@ import (
 	"syscall"
 )
 
-const configFileOther = "/data/options.json"
+const configFileOther = "options.json"
 const configFileWindows = "options.json"
 
 type configType struct {
