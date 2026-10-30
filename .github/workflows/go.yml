@@ -35,6 +35,9 @@ jobs:
     - name: Build Linux ARMv7 32bit (Raspberry Pi 3)
       run: CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -v -o aquarea2mqtt-linux-armv7 .
 
+    - name: Build Linux 64bit
+      run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o aquarea2mqtt-linux .
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v7
       with:
@@ -43,4 +46,5 @@ jobs:
         # A file, directory or wildcard pattern that describes what to upload
         path: |
           aquarea2mqtt.exe
+          aquarea2mqtt-linux
           aquarea2mqtt-linux-armv7
