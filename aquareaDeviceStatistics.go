@@ -32,14 +32,18 @@ func (aq *aquarea) getDeviceLogInformation(user aquareaEndUserJSON) (map[string]
 		return nil, err
 	}
 	var aquareaLogData aquareaLogDataJSON
-	err = json.Unmarshal(b, &aquareaLogData)
-	if err != nil {
+	if err := aq.parseResponse(b, &aquareaLogData); err != nil {
 		return nil, err
 	}
 	if aquareaLogData.ErrorCode != 0 {
 		return nil, fmt.Errorf("log error code: %d", aquareaLogData.ErrorCode)
 	}
 	for _, m := range aquareaLogData.Message {
+		if m.ErrorCode == "3000-0002" {
+			// "Your session has expired. Please login again." - the session
+			// is gone, a re-login is required to get any data
+			return nil, errSessionExpired
+		}
 		// e.g. "This device has already unregistered from the service."
 		aq.warnOnce("logmsg:"+m.ErrorCode, "data/log: %s (error code %s)", m.ErrorMessage, m.ErrorCode)
 	}

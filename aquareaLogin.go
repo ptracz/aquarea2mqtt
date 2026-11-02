@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/md5"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
@@ -65,7 +64,7 @@ func (aq *aquarea) aquareaInitialFetch() {
 
 func (aq *aquarea) aquareaLogin() error {
 	data := []byte(aq.AquareaServiceCloudLogin + aq.AquareaServiceCloudPassword)
-	b, err := aq.httpPost(aq.AquareaServiceCloudURL+"installer/api/auth/login", url.Values{
+	b, err := aq.httpPost(aq.AquareaServiceCloudURL+"/installer/api/auth/login", url.Values{
 		"var.loginId":   {aq.AquareaServiceCloudLogin},
 		"var.password":  {fmt.Sprintf("%x", md5.Sum(data))},
 		"var.inputOmit": {"false"},
@@ -75,17 +74,19 @@ func (aq *aquarea) aquareaLogin() error {
 	}
 
 	var loginStruct aquareaLoginJSON
-	err = json.Unmarshal(b, &loginStruct)
+	if err := aq.parseResponse(b, &loginStruct); err != nil {
+		return err
+	}
 
 	if loginStruct.ErrorCode != 0 {
-		err = fmt.Errorf("Aquarea login error code: %d", loginStruct.ErrorCode)
+		return fmt.Errorf("Aquarea login error code: %d", loginStruct.ErrorCode)
 	}
-	return err
+	return nil
 }
 
 func (aq *aquarea) aquareaInstallerHome() error {
 	// GET installer home to initialize the session (SPA shell - nothing to parse from it)
-	if _, err := aq.httpGet(aq.AquareaServiceCloudURL + "installer/home"); err != nil {
+	if _, err := aq.httpGet(aq.AquareaServiceCloudURL + "/installer/home"); err != nil {
 		return err
 	}
 
@@ -106,8 +107,7 @@ func (aq *aquarea) aquareaInstallerHome() error {
 		return err
 	}
 	var endUsersList aquareaEndUsersListJSON
-	err = json.Unmarshal(b, &endUsersList)
-	if err != nil {
+	if err := aq.parseResponse(b, &endUsersList); err != nil {
 		return err
 	}
 	if endUsersList.ErrorCode != 0 {

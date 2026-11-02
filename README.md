@@ -3,7 +3,7 @@ Panasonic Aquarea Service Cloud to MQTT gateway. Intended for Home Assistant int
 
 
 Configuration 
-Create config.json file based on config.example.json.
+Create config.json file based on config.example.json. The config file is read from `options.json` in the working directory, or from a path given with the `-optionFile` flag, e.g. `./aquarea2mqtt -optionFile /path/to/options.json`.
 
 values: 
 

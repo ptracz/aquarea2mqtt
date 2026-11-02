@@ -1,11 +1,28 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 )
+
+// errSessionExpired indicates the cloud session is no longer valid (the server
+// answered with a login page or a session-expired error) and we must log in again
+var errSessionExpired = errors.New("aquarea session expired")
+
+// parseResponse decodes a JSON response body. When the server answers with an
+// HTML page - typically the login page after the session has expired - it
+// returns errSessionExpired instead of a JSON unmarshal error
+func (aq *aquarea) parseResponse(b []byte, v interface{}) error {
+	if s := bytes.TrimSpace(b); len(s) > 0 && s[0] == '<' {
+		return errSessionExpired
+	}
+	return json.Unmarshal(b, v)
+}
 
 // Posts data to Aquarea web service
 func (aq *aquarea) httpPost(url string, urlValues url.Values) ([]byte, error) {
