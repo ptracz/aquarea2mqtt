@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 )
@@ -39,8 +38,7 @@ func (aq *aquarea) getDeviceStatus(user aquareaEndUserJSON) (aquareaStatusRespon
 	if err != nil {
 		return aquareaStatusResponse, err
 	}
-	err = json.Unmarshal(b, &aquareaStatusResponse)
-	if err != nil {
+	if err := aq.parseResponse(b, &aquareaStatusResponse); err != nil {
 		return aquareaStatusResponse, err
 	}
 	if aquareaStatusResponse.ErrorCode != 0 {

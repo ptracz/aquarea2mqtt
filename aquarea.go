@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -60,7 +61,8 @@ func aquareaHandler(ctx context.Context, wg *sync.WaitGroup, config configType, 
 	defer wg.Done()
 	log.Println("Starting Aquarea Service Cloud handler")
 	var aquareaInstance aquarea
-	aquareaInstance.AquareaServiceCloudURL = config.AquareaServiceCloudURL
+	// strip the trailing slash so API paths can uniformly start with one
+	aquareaInstance.AquareaServiceCloudURL = strings.TrimSuffix(config.AquareaServiceCloudURL, "/")
 	aquareaInstance.AquareaServiceCloudLogin = config.AquareaServiceCloudLogin
 	aquareaInstance.AquareaServiceCloudPassword = config.AquareaServiceCloudPassword
 	aquareaInstance.logSecOffset = config.LogSecOffset
@@ -88,6 +90,9 @@ func aquareaHandler(ctx context.Context, wg *sync.WaitGroup, config configType, 
 
 	log.Println("Attempting to log in to Aquarea Service Cloud")
 	for !aquareaInstance.aquareaSetup() {
+		// keep retrying until the login succeeds; sleeping keeps a failing
+		// login from hammering the service
+		time.Sleep(poolInterval)
 	}
 	log.Println("Logged in to Aquarea Service Cloud")
 
@@ -207,6 +212,9 @@ func (aq *aquarea) loadTranslations(filename string) {
 // The data APIs (status, settings, log) only return data for the device
 // selected this way.
 func (aq *aquarea) selectDevice(user aquareaEndUserJSON) error {
+	// functionUserInformation is an HTML page route (no /api/ prefix, like
+	// installer/home) - it answers with a page even when the session is fine,
+	// so only transport errors are meaningful here
 	_, err := aq.httpPost(aq.AquareaServiceCloudURL+"/installer/functionUserInformation", url.Values{
 		"var.functionSelectedGwUid": {user.GwUID},
 	})
@@ -223,13 +231,15 @@ func (aq *aquarea) feedDataFromAquarea() {
 			log.Println("Will attempt to log in again")
 			// try to log in again
 			aq.aquareaSetup()
-			continue
+			return
 		}
 
 		// Get settings from the device
 		settings, err := aq.getDeviceSettings(user)
 		if err != nil {
-			log.Println(err)
+			if aq.sessionLost("fetching settings", err) {
+				return
+			}
 		} else {
 			aq.dataChannel <- settings
 		}
@@ -237,7 +247,9 @@ func (aq *aquarea) feedDataFromAquarea() {
 		// Send device status
 		deviceStatus, err := aq.parseDeviceStatus(user)
 		if err != nil {
-			log.Println(err)
+			if aq.sessionLost("fetching status", err) {
+				return
+			}
 		} else {
 			aq.dataChannel <- deviceStatus
 		}
@@ -245,11 +257,28 @@ func (aq *aquarea) feedDataFromAquarea() {
 		// Send device logs
 		logData, err := aq.getDeviceLogInformation(user)
 		if err != nil {
-			log.Println(err)
+			if aq.sessionLost("fetching log", err) {
+				return
+			}
 		} else {
 			aq.dataChannel <- logData
 		}
 	}
+}
+
+// sessionLost reports a fetch error and, when it means the cloud session is no
+// longer valid, marks the integration offline and re-logs in. Returns true in
+// that case so the caller can stop polling for the rest of the cycle - the
+// next tick picks up with the fresh session (or retries the login).
+func (aq *aquarea) sessionLost(what string, err error) bool {
+	if !errors.Is(err, errSessionExpired) {
+		log.Println(err)
+		return false
+	}
+	log.Printf("Session expired while %s - will attempt to log in again", what)
+	aq.statusChannel <- false
+	aq.aquareaSetup()
+	return true
 }
 
 // lookupValue translates a cryptic value code (xxxx-yyyy) to a human readable

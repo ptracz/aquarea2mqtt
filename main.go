@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"io/ioutil"
 	"log"
 	"os"
@@ -12,8 +13,12 @@ import (
 	"syscall"
 )
 
-const configFileOther = "/data/options.json"
+const configFileOther = "options.json"
 const configFileWindows = "options.json"
+
+// optionFileFlag overrides the config file location, e.g.
+// ./aquarea2mqtt -optionFile /path/to/options.json
+var optionFileFlag = flag.String("optionFile", "", "path to the options.json config file (default: "+configFileOther+" outside Windows, "+configFileWindows+" on Windows)")
 
 type configType struct {
 	AquareaServiceCloudURL      string
@@ -33,11 +38,13 @@ type configType struct {
 
 func readConfig() configType {
 	var config configType
-	var configFile string
-	if runtime.GOOS == "windows" {
-		configFile = configFileWindows
-	} else {
-		configFile = configFileOther
+	configFile := *optionFileFlag
+	if configFile == "" {
+		if runtime.GOOS == "windows" {
+			configFile = configFileWindows
+		} else {
+			configFile = configFileOther
+		}
 	}
 
 	data, err := ioutil.ReadFile(configFile)
@@ -54,6 +61,7 @@ func readConfig() configType {
 }
 
 func main() {
+	flag.Parse()
 	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	config := readConfig()
 
